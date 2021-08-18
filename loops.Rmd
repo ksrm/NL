@@ -1,0 +1,109 @@
+---
+title: "loops"
+author: "Matt Crump"
+date: "8/18/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# read text in, preserve paragraphs seperated by lines
+text <- scan("TASA/TASA/tasaDocsPara - Sample.txt", 
+             what = character(),
+             sep = "\n")
+text[1]
+text[2]
+
+# create single character vector of words
+all_words <- scan("TASA/TASA/tasaDocsPara - Sample.txt", 
+             what = character())
+
+all_words <- unlist(strsplit(text, split=" "))
+
+# get unique words
+dictionary <- sort(unique(all_words))
+
+word_factor <-as.factor(all_words)
+levels(word_factor)
+
+# make a table indexing each word
+
+word_index <- data.frame(words = dictionary,
+                         index = 1:length(dictionary))
+
+
+```
+
+
+
+```{r}
+
+test_text <- text[1]
+test_text <- unlist(strsplit(test_text, split=" "))
+
+num_words <- length(test_text)
+
+# process each word
+for(i in 1:num_words){
+  print(test_text[i])
+}
+
+
+# find index for a word from lookup table
+a_word <- "ago"
+
+for(j in 1:length(word_index$words)){
+ if(word_index$words[j] == a_word) {
+   print(j)
+   break
+ }
+}
+
+# put them together
+
+number_codes <- c()
+for(i in 1:num_words){
+  
+  for(j in 1:length(word_index$words)){
+    if(word_index$words[j] == test_text[i]) {
+      number_codes[i] <- j
+      break
+    }
+  }
+  
+}
+
+code_output <- paste(number_codes, collapse=" ")
+
+### process all paragraphs in text
+save_all_number_codes <- c()
+for(p in 1:length(text)){
+  test_text <- text[p]
+  test_text <- unlist(strsplit(test_text, split=" "))
+  
+  num_words <- length(test_text)
+  
+  
+  number_codes <- c()
+  for(i in 1:num_words){
+    
+    for(j in 1:length(word_index$words)){
+      if(word_index$words[j] == test_text[i]) {
+        number_codes[i] <- j
+        break
+      }
+    }
+    
+  }
+  
+  code_output <- paste(number_codes, collapse=" ")
+  save_all_number_codes[p] <- code_output
+}
+
+```
+
+
+
