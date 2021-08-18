@@ -17,7 +17,7 @@ library(Matrix)
 
 ```{r}
 
-run<-read.table("C:/Users/12055/Downloads/run example.txt", row.names=c("doc1", "doc2","doc3"),nrows=3)
+run<-read.table("run example.txt", row.names=c("doc1", "doc2","doc3"),nrows=3)
 
 traces<-t(cbind(doc1,doc2,doc3))
 detectTerms<-as.factor(traces)
