@@ -91,10 +91,12 @@ for(p in 1:length(text)){
   for(i in 1:num_words){
     
     for(j in 1:length(word_index$words)){
+      
       if(word_index$words[j] == test_text[i]) {
         number_codes[i] <- j
         break
       }
+      
     }
     
   }
@@ -103,7 +105,84 @@ for(p in 1:length(text)){
   save_all_number_codes[p] <- code_output
 }
 
+dictionary[538]
+
 ```
+
+```{r}
+
+dictionary
+
+which(dictionary == 'americans')
+
+save_all_number_codes <- c()
+
+for(p in 1:length(text)){
+  test_text <- text[p]
+  test_text <- unlist(strsplit(test_text, split=" "))
+  
+  num_words <- length(test_text)
+  
+  number_codes <- c()
+  for(i in 1:num_words){
+    
+    number_codes[i] <- which(dictionary == test_text[i] )
+    
+  }
+  
+  code_output <- paste(number_codes, collapse=" ")
+  save_all_number_codes[p] <- code_output
+}
+
+
+```
+
+
+
+```{r}
+
+word_to_number <- function(word,dictionary){
+  which(dictionary == word)
+}
+
+word_to_number("ago",dictionary)
+
+unlist(lapply(test_text, function(x) {which(dictionary == x)}))
+
+library(magrittr)
+
+lapply(test_text, function(x) {which(dictionary == x)}) %>%
+  unlist() %>%
+  paste(collapse=" ")
+
+paste(unlist(lapply(test_text, function(x) {which(dictionary == x)})),collapse=" ")
+
+```
+
+
+
+```{r}
+
+text[1]
+dictionary
+
+doc_term_matrix <- matrix(0,ncol=length(dictionary),
+                          nrow=length(text)) 
+
+colnames(doc_term_matrix) <- dictionary
+
+test_text <- text[1]
+test_text <- unlist(strsplit(test_text, split=" "))
+
+word_counts <- table(test_text)
+attributes(word_counts)
+names(word_counts)
+word_counts
+
+doc_term_matrix[1,names(word_counts)] <- word_counts
+
+```
+
 
 
 
