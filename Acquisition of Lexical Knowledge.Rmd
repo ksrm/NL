@@ -1,0 +1,82 @@
+---
+title: "Acquisition of Lexical Knowledge"
+output: html_document
+---
+
+
+LSA Analysis Model - Landauer&Dumais(1997)
+
+My assignment is to come up with a term document matrix. 
+
+Must figure out how to use tm package...
+How do you create a document with tm package ? 
+
+steps:
+define object to be assessed ? 
+
+What is the process that I would want my function to run through ?
+run through the string and when it reaches punctuation it adds to the sentence count. Basically just that. But in this case, I am seeking to create a document term matrix...
+So what I want is for the detected sentences to be separated into different documents. And for each document to be evaluated for all of the possible words. 
+
+H
+
+
+Could I better test this out by marking the frequency of the letters not the words ?
+
+I want to go home. The water is too cold ! When can we come back ? 
+How can I count the number of sentences using a text mining package and not using one ? 
+
+There's a certain procedure for turning a string, or character into a different class---do I have to do that first ?
+Review: How do you use punctuation marks to detect the end of a sentence/count the sentence ? 
+
+
+Matrices I went over with Crump:
+Matrix where every possible word is listed horizontally (in columns),
+and the frequency is 
+
+* How do you read in a text file ? read.table
+* How do you create a corpus ?
+
+```{r}
+#calculating co-occurrence relation 
+
+
+```
+
+
+Convolution -- does it necessarily involve recursion ? 
+```{r}
+
+```
+
+Singular Value Decomposition (SVD)
+```{r}
+
+```
+
+
+Calculating the cosine of two vectors. What is the resulting meaning ?  
+```{r}
+
+```
+
+
+sample(runif(1000,0,1))
+
+
+#crump code
+random_vectors<- matrix(rbinom(4*10,1,.5),4,10)
+#^outputs binary
+words<-c("the", "dog", "bit", "mailman")
+rownames(random_vectors)<-words
+
+#"row names" to name words in a sentence
+
+combo<-random_vectors['the',]+random_vectors['dog',]
+
+#library lsa
+
+cosine(random_vectors['the'], random_vectors['dog',])
+
+cosine(random_vectors['dog'], combo)
+#^there will be more similarity 
