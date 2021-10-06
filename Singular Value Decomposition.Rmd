@@ -3,13 +3,12 @@ title: "Singular Value Decomposition"
 output: html_document
 ---
 
-Source: 
 Credit to Kirk Baker, SVD Tutorial, 2005 & Landauer and Dumais, 1986
 
 ## Characteristics of SVD
 
 * Saves most important data
-* Each column vector of the resultant matrix represents each component found SVD. The components are ordered by amount of variation, starting from greatest to least. 
+* Each column vector of the resultant matrix represents each component found through SVD. The components are ordered by amount of variation, starting from greatest to least. 
 * Reduces data through the use of eigenvalues representing primary components
 * The SVD equation in words : The original matrix is equal to an orthogonal matrix U, multipied by a diagonal matrix containing eigenvalues multiplied by the inverse matrix of U, named V. 
 
@@ -32,7 +31,7 @@ A\vec{v} = \lambda\vec{v}
 $$
 From U and V, find lambda using above equation. In this example, the determinant is set to 0 in order to use system of equations and solve for lambda.**
 
-Orthonormalization process to create orthogonal matrices: 
+Gram-Schmidt orthonormalization process is applied to create orthogonal matrices: 
 To normalize a vector, the following equation applies:
 $$
 \hat{v}=\vec{v}\div|\vec{v}|
@@ -41,7 +40,7 @@ $$
 |\vec{v}| 
 $$ is calculated by dividing by the magnitude (or length?) of the vector. The quotient is the unit vector
 
-Example 2 of SVD (Landauer and Dumais, Figure 1)
+Example 2 of SVD (Landauer and Dumais, pg. 10, Figure 1)
 
 $$
 {X } = {W}{S}{P}'
@@ -52,12 +51,11 @@ A<-matrix(freq, ncol=9, nrow=12, byrow=TRUE)
 
 rownames(A)<-c("1human", "2interface", "3computer", "4user", "5system", "6response", "7time", "8EPS", "9survey", "10trees", "11graph", "12minors")
 
-At<-t(dtm)
+At<-t(A)
 
 U_mm<-A%*%At
 V<-At%*%A
 
-lambda
 ```
 
 
