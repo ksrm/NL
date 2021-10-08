@@ -17,15 +17,13 @@ install.packages("matlib")
 
 Example of SVD:
 ```{r}
-
-
 a <- c(2,0,8,6,0,
-            1,6,0,1,7,
-            5,0,7,4,0,
-            7,0,8,5,0,
-            0,10,0,0,7)
+        1,6,0,1,7,
+        5,0,7,4,0,
+        7,0,8,5,0,
+        0,10,0,0,7)
 A <- matrix(a,byrow=TRUE, ncol=5)
-At<-t(A)
+At <- t(A)
 
 #Step 1 - multiply A and A transposed
 U<-A%*%At
@@ -36,7 +34,7 @@ eigen(U)
 
 #Step 3 - from the paired eigenvalues(lambda), create a new matrix arranged by column from largest eigenvalues to smallest. 
 
-V<-At%*%A
+V <- At%*%A
 ```
 $$
 A\vec{v} = \lambda\vec{v}
@@ -70,25 +68,17 @@ freq<-c(1,0,0,1,0,0,0,0,0,
         0,0,0,0,0,1,1,1,0,
         0,0,0,0,0,0,1,1,1,
         0,0,0,0,0,0,0,1,1)
-A<-matrix(freq, ncol=9, nrow=12, byrow=TRUE)
+A <- matrix(freq, ncol=9, nrow=12, byrow=TRUE)
 A
 rownames(A)<-c("1human", "2interface", "3computer", "4user", "5system", "6response", "7time", "8EPS", "9survey", "10trees", "11graph", "12minors")
 
 cor(A["1human",],A["12minors",])
 cor(A["1human",],A["4user",])
 
-W<-A%*%t(A)
+W <- A%*%t(A)
 
-e<-eigen(W)
-
-e<-e$values
-
-as.matrix(e)
-
+e <- eigen(W)
+W <- e$vectors
+W*-1
 ```
-
-
-
-
-
 
