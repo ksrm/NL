@@ -3,7 +3,10 @@ title: "Singular Value Decomposition"
 output: html_document
 ---
 
-Credit to Kirk Baker, SVD Tutorial, 2005 & Landauer and Dumais, 1986
+Credit to Kirk Baker, SVD Tutorial, 2005 & Landauer and Dumais, 1998
+```{r}
+install.packages("matlib")
+```
 
 ## Characteristics of SVD
 
@@ -14,11 +17,20 @@ Credit to Kirk Baker, SVD Tutorial, 2005 & Landauer and Dumais, 1986
 
 Example of SVD:
 ```{r}
-A<-matrix(c(3,1,1,-1,3,1), byrow=TRUE, ncol=3)
+
+
+a <- c(2,0,8,6,0,
+            1,6,0,1,7,
+            5,0,7,4,0,
+            7,0,8,5,0,
+            0,10,0,0,7)
+A <- matrix(a,byrow=TRUE, ncol=5)
 At<-t(A)
 
-#Step 1 - take dot product of A and A transposed
+#Step 1 - multiply A and A transposed
 U<-A%*%At
+
+eigen(U)
 
 #Step 2 - multiply by vertical variable matrix* and use system of equations to solve for lambda.
 
@@ -46,15 +58,32 @@ $$
 {X } = {W}{S}{P}'
 $$
 ```{r}
-freq<-c(1,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,1,1,2,0,0,0,0,0,0,1, 0,0,1,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0)
+freq<-c(1,0,0,1,0,0,0,0,0,
+        1,0,1,0,0,0,0,0,0,
+        1,1,0,0,0,0,0,0,0,
+        0,1,1,0,1,0,0,0,0,
+        0,1,1,2,0,0,0,0,0,
+        0,1,0,0,1,0,0,0,0,
+        0,1,0,0,1,0,0,0,0,
+        0,0,1,1,0,0,0,0,0,
+        0,1,0,0,0,0,0,0,1,
+        0,0,0,0,0,1,1,1,0,
+        0,0,0,0,0,0,1,1,1,
+        0,0,0,0,0,0,0,1,1)
 A<-matrix(freq, ncol=9, nrow=12, byrow=TRUE)
-
+A
 rownames(A)<-c("1human", "2interface", "3computer", "4user", "5system", "6response", "7time", "8EPS", "9survey", "10trees", "11graph", "12minors")
 
-At<-t(A)
+cor(A["1human",],A["12minors",])
+cor(A["1human",],A["4user",])
 
-U_mm<-A%*%At
-V<-At%*%A
+W<-A%*%t(A)
+
+e<-eigen(W)
+
+e<-e$values
+
+as.matrix(e)
 
 ```
 
