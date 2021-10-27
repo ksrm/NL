@@ -3,6 +3,40 @@ title: "Singular Value Decomposition"
 output: html_document
 ---
 
+Preprocessing
+```{r}
+x <- readLines("paragraph separation.txt")
+x <- tolower(x)
+x <- removePunctuation(x)
+x
+
+#attempts
+x<- str_match(x, "end")
+x
+
+?gsub
+?strsplit
+?boundary
+?Regex.Split
+?scan
+
+# x <- strsplit(x, grep(\x(?=end{2,}, x))
+# x
+# 
+# x <- str_split(x, boundary("end"))
+# x <- strsplit(x, split="\\(?=end{1,}")
+# x
+# 
+# x <- unlist(strsplit(x, split = "end"))
+# 
+# 
+# x <- strsplit(x, split=gregexpr('(?:\r\n?|\n){2,}',))[[1]]
+# 
+# by_paragraph <- strsplit(x ,"(?:\r\n?|\n){2,}")[[1]]
+```
+
+
+
 Credit to Kirk Baker, SVD Tutorial, 2005 & Landauer and Dumais, 1998
 ```{r}
 install.packages("matlib")
@@ -55,6 +89,7 @@ Example 2 of SVD (Landauer and Dumais, pg. 10, Figure 1)
 $$
 {X } = {W}{S}{P}'
 $$
+
 ```{r}
 freq<-c(1,0,0,1,0,0,0,0,0,
         1,0,1,0,0,0,0,0,0,
@@ -88,5 +123,25 @@ ex <- c(-1,1,
 ex <- matrix(ex, ncol=2, byrow=TRUE)
 t(ex)
 
+```
+
+
+```{r}
+guten_sample <- readLines("guten sample.txt")
+guten_sample
+length(guten_sample)
+guten_sample <- removePunctuation(guten_sample)
+docs <- Corpus(VectorSource(guten_sample))
+tdm <- TermDocumentMatrix(docs)
+tdm <- as.matrix(tdm)
+tdm
+#dtm<-t(tdm)
+#dtm
+
+dim(tdm)
+class(tdm) #both matrix and array
+C <- tdm%*%t(tdm)
+E <- eigen(C)
+E
 ```
 

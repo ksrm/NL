@@ -7,12 +7,14 @@ output: html_document
 library(lsa)
 library(corpus)
 library(tm)
+library(stringr)
 ```
 
 
 ```{r}
 #TASA SMALL FILE
 TASA_short<-readLines("TASA/TASA/tasaDocsPara - Sample.txt")
+length(TASA_short)
 docs<-Corpus(VectorSource(TASA_short))
 tdm<-TermDocumentMatrix(docs)
 tdm<-as.matrix(tdm)
