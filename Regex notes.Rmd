@@ -1,0 +1,54 @@
+---
+title: "Regex Quick guide "
+author: KSRM
+output: html_document
+---
+
+Sentence detection function
+```{r}
+
+```
+
+
+Detecting punctuation
+
+A period detects any character. To represent an actual period, brackets [.] or an escape (backslash) followed by a period and a forward slash may work. 
+
+Examples:
+```{r}
+
+abbreviations <- "Mrs. Doubtfire popped the lid. Dr. Stewart came back !"
+a <- unlist(strsplit(abbreviations, split = "(?<=[.][A-Z]", fixed = FALSE, perl = TRUE, useBytes = TRUE))
+a
+
+a <- "said Michael? The teacher"
+a <- unlist(strsplit(a, split = "?.*[A-Za-z]", fixed = FALSE, perl = TRUE, useBytes = TRUE))
+a #X
+
+a <- "said Michael. The teacher...What do you Want ?....I said what do you want ! I run."
+a <- unlist(strsplit(a, split = "n[.]", fixed = FALSE, perl = TRUE, useBytes = TRUE))
+a #X
+
+a <- "said Michael? The teacher"
+a <- unlist(strsplit(a, split = "\\B[?][A-Za-z]\\B", fixed = FALSE, perl = TRUE, useBytes = TRUE))
+a #X
+```
+
+(?<=[.])\\s
+detect period followed by white space 
+
+attempt 1: 
+(?<=[.][A-Z]
+
+W+
+Some words
+
+.*
+between (?)
+
+\\s
+white space 
+
+([\.\?!][\'\"\u2018\u2019\u201c\u201d\)\]]*\s*(?<!\w\.\w.)(?<![A-Z][a-z][a-z]\.)(?<![A-Z][a-z]\.)(?<![A-Z]\.)\s+)
+
+#https://mikedombrowski.com/2017/04/regex-sentence-splitter/

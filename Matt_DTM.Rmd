@@ -29,7 +29,7 @@ class(traces[1,1])
 print(traces)
 unique(traces)
 
-run<-read.table("C:/Users/12055/Downloads/run example.txt")
+run<-read.table("run example.txt")
 class(run)
 unique(run)
 ?unique
@@ -60,7 +60,7 @@ print(x== "I")
 ```{r}
 #3 LINE EXAMPLE TEXT
 
-run<-readLines("C:/Users/12055/Downloads/run example.txt")
+run<-readLines("run example.txt")
 docs<-Corpus(VectorSource(run))
 inspect(docs)
 dtm<-TermDocumentMatrix(docs)
@@ -79,7 +79,7 @@ wordcloud(words = d$word, freq = d$freq, min.freq = 1,
 #TASA bag of words
 
 #need to reduce vector size
-TASA<-readLines("C:/Users/12055/Documents/CUNY - Undergrad/CUNY BA/Summer 2021/Reading/August 18 2021/TASA/TASA/tasaDocsPara.txt")
+TASA<-readLines("TASA/TASA/tasaDocsPara - Sample.txt")
 docs<-Corpus(VectorSource(TASA))
 inspect(docs)
 dtm<-TermDocumentMatrix(docs)
@@ -107,7 +107,7 @@ wordcloud(words = d$word, freq = d$freq, min.freq = 1,
 #ALICE
 
 #preprocessing
-Alice<-readLines("C:/Users/12055/Documents/CUNY - Undergrad/CUNY BA/Summer 2021/Reading/August 18 2021/Alice.txt")
+Alice<-readLines("Alice.txt")
 head(Alice, n=100)
 tolower(Alice)
 removePunctuation(Alice)
@@ -117,11 +117,11 @@ removePunctuation(Alice)
 
 ```{r}
 #TASA SMALL FILE
-TASA_short<-readLines("C:/Users/12055/Documents/CUNY - Undergrad/CUNY BA/Summer 2021/Reading/August 18 2021/TASA/TASA/tasaDocsPara - Sample.txt")
+TASA_short<-readLines("TASA/TASA/tasaDocsPara - Sample.txt")
 tokenize_words(TASA_short)
 tokenize_lines(TASA_short)
 
-TASA_short<-readLines("C:/Users/12055/Documents/CUNY - Undergrad/CUNY BA/Summer 2021/Reading/August 18 2021/TASA/TASA/tasaDocsPara - Sample.txt")
+TASA_short<-readLines("TASA/TASA/tasaDocsPara - Sample.txt")
 docs<-Corpus(VectorSource(TASA_short))
 inspect(docs)
 dtm<-TermDocumentMatrix(docs)
@@ -130,7 +130,7 @@ m<-as.matrix(dtm)
 t(m)
 
 
-TASA_short<-read.table("C:/Users/12055/Documents/CUNY - Undergrad/CUNY BA/Summer 2021/Reading/August 18 2021/TASA/TASA/tasaDocsPara - Sample.txt", sep="\t", header=FALSE)
+TASA_short<-read.table("TASA/TASA/tasaDocsPara - Sample.txt", sep="\t", header=FALSE)
 detect_terms<-as.factor(TASA_short)
 unique(detect_terms)
 

@@ -1,0 +1,91 @@
+---
+title: "Stories"
+author: "Matt Crump"
+date: "11/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#load in sentences, split by period
+sentences <- scan(file="gutenberg short stories-2.txt",
+                what = character(),
+                sep=".")
+
+# print a sentence
+sentences[1]
+
+# count words in a sentence
+length(unlist(strsplit(sentences[1]," ")))
+
+#write a function to count words in string
+count_words_in_string <- function(x){
+  length(unlist(strsplit(x," ")))
+}
+
+# use function demo
+count_words_in_string(sentences[1])
+
+#get word count for all sentences
+
+sentence_counts <- c()
+for(i in 1:length(sentences)){
+  sentence_counts[i] <- count_words_in_string(sentences[i])
+}
+
+sentence_counts <- unlist(lapply(sentences,count_words_in_string))
+
+# put everything in tibble
+
+library(tibble)
+
+sentence_df <- tibble(sentences,sentence_counts) 
+
+
+# get "good sentences"
+
+library(dplyr)
+
+good_sentences <- sentence_df %>%
+  filter(sentence_counts > 5,
+         sentence_counts < 20)
+
+# get the document term matrix
+library(tm)
+
+sentence_corpus <- Corpus(VectorSource(good_sentences$sentences))
+
+## MORE PRE-PROCESSING
+
+# tolower
+
+# remove punctuation
+
+# remove stop words
+
+sentence_dtm <- TermDocumentMatrix(sentence_corpus)
+sentence_dtm <- as.matrix(sentence_dtm)
+
+## Weight the matrix
+
+## run the SVD
+
+library(irlba)
+?irlba
+
+svd_sentences <- irlba(sentence_dtm,5)
+
+hist(svd_sentences$v[,1])
+
+good_sentences <- cbind(good_sentences,svd_sentences$v)
+
+# make it easy to see how sentences are distributes along each dimension
+
+cor(good_sentences$`1`,good_sentences$sentence_counts)
+      
+
+```
+

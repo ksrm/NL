@@ -1,0 +1,181 @@
+---
+title: "Singular Value Decomposition"
+output: html_document
+---
+
+
+```{r}
+library(tm)
+library(tokenizers)
+library(stringr)
+
+stories <- scan("gutenberg short stories-2.txt", what = "character", allowEscapes = TRUE)
+all_words <- paste(stories[1:length(stories)], collapse = " ")
+```
+
+Description of Data
+- 13 short stories by 13 authors 
+- Check the length of each short story by words, sentences, and paragraph
+
+Preprocessing
+
+The tm package created by Ingo Feinerer and Kurt Hornik (2020) makes it possible to swiftly create a document term matrix.
+
+```{r}
+#edit abbreviations/text formatting
+all_words <- gsub("Mrs.", "Mrs", all_words)
+all_words <- gsub("Mr.", "Mr", all_words)
+all_words <- gsub("said", ",said", all_words)
+all_words <- gsub("says", ",says", all_words)
+all_words <- gsub("Says", ",says", all_words)
+
+
+sentences <- tokenize_sentences(all_words) # creates list
+
+
+# make a table indexing each sentence
+sentence_index <- data.frame(sentences = sentences ,
+                         index = 1:length(sentences )) #to sort by story 
+
+
+var_names <- sentence_index$c..This.thing.is.so.rare.in.all.its.circumstances..and.on.so.good.authority..that.my.reading.and.conversation.have.not.given.me.anything.like.it....
+
+#convert to vector
+for(i in var_names) {
+    assign(i, sentences[[i]])
+}
+
+# sentences[[716]] # fails to retrieve  
+# unlist(x)
+(abbrev <- str_extract(var_names, "^(?=.*\\.)[A-Za-z.]{4}$")) #retrieve abbreviations
+# grep("^(?=.*[.])[a-zA-Z.]{3}$", x, value = TRUE, er)
+
+
+#preparing sentence documents
+var_names <- removePunctuation(var_names)
+var_names <- removeNumbers(var_names)
+var_names <- tolower(var_names)
+
+#checking for low/high frequency words
+all_words_post <- as.vector(var_names) #return to single string
+
+X <- removeWords(all_words_post,stopwords(kind = "en"))
+class(X)
+X_vector <- length(unique(as.vector(X)))
+
+unique_words <- unique(all_words_post) 
+length(unique_words)
+class(unique_words)
+
+x <- removeWords(X_vector, unique_words)
+
+x1 <- remove(X_vector, unique_words)
+
+
+docs <- var_names
+sentence_corpus <- VCorpus(VectorSource(docs))
+sentence_corpus <- tm_map(sentence_corpus, removeWords, stopwords('english'))
+class(sentence_corpus)
+
+
+sentence_dtm <- TermDocumentMatrix(sentence_corpus)
+(sentence_dtm <- as.matrix(sentence_dtm))
+
+#weight matrix
+
+#count words
+# sapply(strsplit(all_words_post," "), length)
+# sapply(strsplit(unique_words," "), length)
+
+```
+
+## Characteristics of SVD
+
+* Saves most important data
+* Each column vector of the resultant matrix represents each component found through SVD. The components are ordered by amount of variation, starting from greatest to least. 
+* Reduces data through the use of eigenvalues representing primary components
+* The SVD equation in words : The original matrix is equal to an orthogonal matrix U, multipied by a diagonal matrix containing eigenvalues multiplied by the inverse matrix of U, named V. 
+
+Example of SVD:
+```{r}
+a <- c(2,0,8,6,0,
+        1,6,0,1,7,
+        5,0,7,4,0,
+        7,0,8,5,0,
+        0,10,0,0,7)
+A <- matrix(a,byrow=TRUE, ncol=5)
+At <- t(A)
+
+#Step 1 - multiply A and A transposed
+U<-A%*%At
+
+eigen(U)
+
+#Step 2 - multiply by vertical variable matrix* and use system of equations to solve for lambda.
+
+#Step 3 - from the paired eigenvalues(lambda), create a new matrix arranged by column from largest eigenvalues to smallest. 
+
+V <- At%*%A
+```
+$$
+A\vec{v} = \lambda\vec{v}
+$$
+From U and V, find lambda using above equation. In this example, the determinant is set to 0 in order to use system of equations and solve for lambda.**
+
+Gram-Schmidt orthonormalization process is applied to create orthogonal matrices: 
+To normalize a vector, the following equation applies:
+$$
+\hat{v}=\frac{\vec{v}}{|\vec{v}|}
+$$
+$$
+|\vec{v}| 
+$$ is calculated by dividing by the magnitude (or length?) of the vector. The quotient is the unit vector
+
+Example 2 of SVD (Landauer and Dumais, pg. 10, Figure 1)
+
+$$
+{X } = {W}{S}{P}'
+$$
+
+Reproducing Landauer and Dumais example. 
+```{r}
+freq<-c(1,0,0,1,0,0,0,0,0,
+        1,0,1,0,0,0,0,0,0,
+        1,1,0,0,0,0,0,0,0,
+        0,1,1,0,1,0,0,0,0,
+        0,1,1,2,0,0,0,0,0,
+        0,1,0,0,1,0,0,0,0,
+        0,1,0,0,1,0,0,0,0,
+        0,0,1,1,0,0,0,0,0,
+        0,1,0,0,0,0,0,0,1,
+        0,0,0,0,0,1,1,1,0,
+        0,0,0,0,0,0,1,1,1,
+        0,0,0,0,0,0,0,1,1)
+A <- matrix(freq, ncol=9, nrow=12, byrow=TRUE)
+A
+rownames(A)<-c("1human", "2interface", "3computer", "4user", "5system", "6response", "7time", "8EPS", "9survey", "10trees", "11graph", "12minors")
+
+cor(A["1human",],A["12minors",])
+cor(A["1human",],A["4user",])
+
+W <- A%*%t(A)
+
+e <- eigen(W)
+W <- e$vectors
+W <- W*-1
+
+ex <- c(-1,1,
+        -1,3,
+        -3,1,
+        -3,3)
+ex <- matrix(ex, ncol=2, byrow=TRUE)
+t(ex)
+
+```
+
+
+
+References:
+Kirk Baker, SVD Tutorial, 2005 
+Landauer and Dumais, 1998
+
